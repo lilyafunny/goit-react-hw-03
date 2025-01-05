@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid'
 import { useId } from "react";
 import * as Yup from "yup";
 
+import s from './ContactForm.module.css';
+
 const ContactFormSchema = Yup.object().shape({
     name: Yup.string().min(3, "Too short!").max(50, "Too long!").required("Required"),
     number: Yup.string().min(3, "Too short!").max(50, "Too long!").required("Required")
@@ -16,7 +18,8 @@ const initialValues = {
 
 
 
-const ContactForm = () => {
+const ContactForm = ({ onAdd }) => {
+
 
 
     const nameFieldId = useId();
@@ -24,28 +27,34 @@ const ContactForm = () => {
 
     const handleSubmit = (values, action) => {
 
-        values.id = nanoid();
-        console.log(values);
+
+        onAdd({
+            id: nanoid(),
+            name: values.name,
+            number: values.number,
+
+        });
+
         action.resetForm();
     };
 
     return (
         <Formik initialValues={initialValues} onSubmit={handleSubmit}
             validationSchema={ContactFormSchema}>
-            <Form>
-                <div>
-                    <label htmlFor={nameFieldId}>Name</label>
-                    <Field type="text" name="name" id={nameFieldId} />
-                    <ErrorMessage name="name" component="span" />
+            <Form className={s.form}>
+                <div className={s.name_container}>
+                    <label className={s.name} htmlFor={nameFieldId}>Name</label>
+                    <Field className={s.input} type="text" name="name" id={nameFieldId} />
+                    <ErrorMessage className={s.error} name="name" component="span" />
                 </div>
 
-                <div>
-                    <label htmlFor={numberFieldId}>Number</label>
-                    <Field type="number" name="number" id={numberFieldId} />
-                    <ErrorMessage name="number" component="span" />
+                <div className={s.name_container}>
+                    <label className={s.name} htmlFor={numberFieldId}>Number</label>
+                    <Field className={s.input} type="text" name="number" id={numberFieldId} />
+                    <ErrorMessage className={s.error} name="number" component="span" />
                 </div>
 
-                <button type="submit">Add contact</button>
+                <button className={s.btn} type="submit">Add contact</button>
             </Form >
 
 
